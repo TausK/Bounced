@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class BlockPush : MonoBehaviour
@@ -13,9 +14,15 @@ public class BlockPush : MonoBehaviour
     [SerializeField]
     private float blockSpeedY;
    
-    private float posY;
     [SerializeField]
     private Transform origin;
+
+    public float blockTime;
+    private float maxTime;
+
+    public Text timeText;
+    [SerializeField]
+    private bool screenTouched;
     #endregion
     private void Awake()
     {
@@ -27,13 +34,19 @@ public class BlockPush : MonoBehaviour
     void Start()
     {
         origin.position = transform.position;
-
+        blockTime = 0;
+        timeText.text = blockTime.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
         TouchSetup();
+        timeText.text = blockTime.ToString();
+        if(screenTouched == true)
+        {
+            blockTime += Time.deltaTime;
+        }
     }
 
     void TouchSetup()
@@ -57,11 +70,12 @@ public class BlockPush : MonoBehaviour
                 case TouchPhase.Began:
                     //begin moving block down
                     rb2d.velocity = Vector2.down;
+                    screenTouched = true;
                     break;
-
-
+                    
                 case TouchPhase.Ended:
                     rb2d.velocity = Vector2.up * blockSpeedY;
+                    screenTouched = false;
                     break;
             }
 
@@ -73,6 +87,8 @@ public class BlockPush : MonoBehaviour
         if(collision.gameObject.name == "Ball")
         {
             Destroy(gameObject);
+            //rb2d.velocity = Vector2.zero;
+            blockTime = 0;
         }
     }
 }

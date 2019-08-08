@@ -13,6 +13,8 @@ public class BallMove : MonoBehaviour
 
     Rigidbody2D rb2d;
 
+    public BlockPush block;
+
     #endregion
 
     // Start is called before the first frame update
@@ -20,6 +22,7 @@ public class BallMove : MonoBehaviour
     {
         //reference rigidbody component
         rb2d = GetComponent<Rigidbody2D>();
+        block = GameObject.FindGameObjectWithTag("Block").GetComponent<BlockPush>();
     }
 
     // Update is called once per frame
@@ -33,7 +36,19 @@ public class BallMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Block")
         {
-            rb2d.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
+            if(block.blockTime <= 0.2f)
+            {
+                rb2d.AddForce(new Vector2(forceX, forceY + 1), ForceMode2D.Impulse);
+            }
+            else if(block.blockTime <= 0.4f)
+            {
+                rb2d.AddForce(new Vector2(forceX, forceY + 2), ForceMode2D.Impulse);
+            }
+            else
+            {
+                rb2d.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
+            }
+            //rb2d.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
         }
     }
 }
