@@ -51,7 +51,7 @@ public class BlockPush : MonoBehaviour
 
     void TouchSetup()
     {
-        Debug.Log(origin.position);
+
 
         //if screen touch is more than no touch then...
         if (Input.touchCount > 0)
