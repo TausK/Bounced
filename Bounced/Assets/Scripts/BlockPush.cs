@@ -13,12 +13,13 @@ public class BlockPush : MonoBehaviour
     private Rigidbody2D rb2d;
     [SerializeField]
     private float blockSpeedY;
-   
+
     [SerializeField]
     private Transform origin;
 
-    public float blockTime;
-    private float maxTime;
+    public float blockTime = 0.0f;
+    [SerializeField]
+    private float maxTime = 3.0f;
 
     public Text timeText;
     [SerializeField]
@@ -42,10 +43,14 @@ public class BlockPush : MonoBehaviour
     void Update()
     {
         TouchSetup();
-        timeText.text = blockTime.ToString();
-        if(screenTouched == true)
+        timeText.text = blockTime.ToString("0.0");
+
+
+
+        if (screenTouched == true)
         {
             blockTime += Time.deltaTime;
+
         }
     }
 
@@ -71,11 +76,13 @@ public class BlockPush : MonoBehaviour
                     //begin moving block down
                     rb2d.velocity = Vector2.down;
                     screenTouched = true;
+
                     break;
-                    
+
                 case TouchPhase.Ended:
                     rb2d.velocity = Vector2.up * blockSpeedY;
                     screenTouched = false;
+
                     break;
             }
 
@@ -84,11 +91,11 @@ public class BlockPush : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Ball")
+        if (collision.gameObject.name == "Ball")
         {
             Destroy(gameObject);
-            //rb2d.velocity = Vector2.zero;
-            blockTime = 0;
+            rb2d.velocity = Vector2.zero;
+            //blockTime = 0;
         }
     }
 }

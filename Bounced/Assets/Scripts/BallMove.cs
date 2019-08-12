@@ -36,22 +36,21 @@ public class BallMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Block")
         {
-            if(block.blockTime <= 1.0f)
+            if (block.blockTime >= 1.0f &&  block.blockTime < 2.0f)
             {
-                Debug.Log("over 1f");
-                rb2d.AddForce(new Vector2(forceX, forceY + 1), ForceMode2D.Impulse);
+                Debug.Log("Low Charge");
+                rb2d.AddForce(new Vector2(forceX, forceY + 1.0f), ForceMode2D.Impulse);
             }
-            else if(block.blockTime <= 1.5f)
+            else if (block.blockTime >= 2.0f)
             {
-                Debug.Log("over 1.5f");
-                rb2d.AddForce(new Vector2(forceX, forceY + 2), ForceMode2D.Impulse);
+                Debug.Log("Medium Charge");
+                rb2d.AddForce(new Vector2(forceX, forceY + 1.5f), ForceMode2D.Impulse);
             }
-            //else
-            //{
-            //    Debug.Log("No condition");
-            //    rb2d.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
-            //}
-            //rb2d.AddForce(new Vector2(forceX, forceY), ForceMode2D.Impulse);
+            else
+            {
+                Debug.Log("No Charge");
+                rb2d.velocity = Vector2.zero;
+            }
         }
     }
 }
