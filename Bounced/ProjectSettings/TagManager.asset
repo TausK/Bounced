@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - Ball
   - Block
+  - KillZone
   layers:
   - Default
   - TransparentFX

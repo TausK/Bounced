@@ -13,10 +13,7 @@ public class BlockPush : MonoBehaviour
     private Rigidbody2D rb2d;
     [SerializeField]
     private float blockSpeedY;
-
-    [SerializeField]
-    private Transform origin;
-
+    
     public float blockTime = 0.0f;
     [SerializeField]
     private float maxTime = 3.0f;
@@ -24,6 +21,10 @@ public class BlockPush : MonoBehaviour
     public Text timeText;
     [SerializeField]
     private bool screenTouched;
+    [SerializeField]
+    private bool touchedBall;
+
+    private Vector2 origin;
     #endregion
     private void Awake()
     {
@@ -34,7 +35,7 @@ public class BlockPush : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        origin.position = transform.position;
+        origin = transform.position;
         blockTime = 0;
         timeText.text = blockTime.ToString();
     }
@@ -44,13 +45,17 @@ public class BlockPush : MonoBehaviour
     {
         TouchSetup();
         timeText.text = blockTime.ToString("0.0");
-
-
-
+        
         if (screenTouched == true)
         {
             blockTime += Time.deltaTime;
 
+        }
+
+        if (touchedBall == true)
+        {
+            rb2d.velocity = Vector2.up * blockSpeedY;
+            
         }
     }
 
@@ -73,16 +78,12 @@ public class BlockPush : MonoBehaviour
             {
                 //first case/ First touch occurence
                 case TouchPhase.Began:
-                    //begin moving block down
-                    rb2d.velocity = Vector2.down;
                     screenTouched = true;
-
                     break;
 
                 case TouchPhase.Ended:
-                    rb2d.velocity = Vector2.up * blockSpeedY;
+                    touchedBall = true;
                     screenTouched = false;
-
                     break;
             }
 
@@ -93,8 +94,11 @@ public class BlockPush : MonoBehaviour
     {
         if (collision.gameObject.name == "Ball")
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            touchedBall = false;
+            transform.position = origin;
             rb2d.velocity = Vector2.zero;
+           
             //blockTime = 0;
         }
     }

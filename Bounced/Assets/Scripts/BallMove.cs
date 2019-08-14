@@ -15,6 +15,8 @@ public class BallMove : MonoBehaviour
 
     public BlockPush block;
 
+    public Vector2 ballOrigin;
+
     #endregion
 
     // Start is called before the first frame update
@@ -23,6 +25,7 @@ public class BallMove : MonoBehaviour
         //reference rigidbody component
         rb2d = GetComponent<Rigidbody2D>();
         block = GameObject.FindGameObjectWithTag("Block").GetComponent<BlockPush>();
+        ballOrigin = transform.position;
     }
 
     // Update is called once per frame
@@ -34,23 +37,35 @@ public class BallMove : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Block")
+        if (collision.gameObject.CompareTag("Block"))
         {
+            #region Ball Force
             if (block.blockTime >= 1.0f &&  block.blockTime < 2.0f)
             {
                 Debug.Log("Low Charge");
                 rb2d.AddForce(new Vector2(forceX, forceY + 1.0f), ForceMode2D.Impulse);
             }
-            else if (block.blockTime >= 2.0f)
+            else if (block.blockTime >= 2.0f && block.blockTime < 3.0f)
             {
                 Debug.Log("Medium Charge");
-                rb2d.AddForce(new Vector2(forceX, forceY + 1.5f), ForceMode2D.Impulse);
+                rb2d.AddForce(new Vector2(forceX + 1.0f, forceY + 1.5f), ForceMode2D.Impulse);
+            }
+            else if(block.blockTime >= 3.0f)
+            {
+                Debug.Log("Max Charge");
+                rb2d.AddForce(new Vector2(forceX + 1.5f, forceY + 2.0f), ForceMode2D.Impulse);
             }
             else
             {
                 Debug.Log("No Charge");
                 rb2d.velocity = Vector2.zero;
             }
+            #endregion
+        }
+
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            block.blockTime = 0;
         }
     }
 }
