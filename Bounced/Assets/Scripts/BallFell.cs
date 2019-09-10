@@ -5,11 +5,11 @@ using UnityEngine;
 public class BallFell : MonoBehaviour
 {
  
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.gameObject.CompareTag("Ball"))
+        if (col.gameObject.CompareTag("Ball"))
         {
-            collision.transform.position = collision.transform.GetComponent<BallMove>().ballOrigin;
+           // col.transform.position = col.transform.GetComponent<BallMove>();
         }
     }
 }
